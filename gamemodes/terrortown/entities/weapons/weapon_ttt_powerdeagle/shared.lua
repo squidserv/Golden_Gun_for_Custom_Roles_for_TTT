@@ -113,8 +113,7 @@ local InnocentTeams = {
 	[ROLE_DETECTIVE]=true,
 	[ROLE_MERCENARY]=true,
 	[ROLE_PHANTOM]=true,
-	[ROLE_GLITCH]=true,
-	[ROLE_EMT]=true
+	[ROLE_GLITCH]=true
 }
 local PurpleTeams = {
 	[ROLE_JESTER]=true,
