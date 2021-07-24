@@ -140,26 +140,51 @@ function SWEP:PrimaryAttack()
 
 			hook.Add("EntityTakeDamage", title, function(ent, dmginfo)
 				if (IsValid(ent) and ent:IsPlayer() and dmginfo:IsBulletDamage() and dmginfo:GetAttacker():GetActiveWeapon() == self) then
-					if InnocentTeams[ent:GetRole()] then
-						local newdmg = DamageInfo()
-						newdmg:SetDamage(9990)
-						newdmg:SetAttacker(owner)
-						newdmg:SetInflictor(self.Weapon)
-						newdmg:SetDamageType(DMG_BULLET)
-						newdmg:SetDamagePosition(owner:GetPos())
+					if CR_VERSION then
+						if owner:IsSameTeam(ent) then
+							local newdmg = DamageInfo()
+							newdmg:SetDamage(9990)
+							newdmg:SetAttacker(owner)
+							newdmg:SetInflictor(self.Weapon)
+							newdmg:SetDamageType(DMG_BULLET)
+							newdmg:SetDamagePosition(owner:GetPos())
 
-						hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
-						owner:TakeDamageInfo(newdmg)
-						return true -- block all damage on the target
-					elseif TraitorTeams[ent:GetRole()] then
-						hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
-						dmginfo:ScaleDamage(270) -- deals 9990 damage
-					elseif PurpleTeams[ent:GetRole()] then
-						hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
-						dmginfo:ScaleDamage(0) -- deals 0 damage
-						ent:Kill() -- kill jester without them winning
-						if SERVER then
-							owner:Kill()
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							owner:TakeDamageInfo(newdmg)
+							return true -- block all damage on the target
+						elseif not ent:IsJesterTeam() then
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							dmginfo:ScaleDamage(270) -- deals 9990 damage
+						else
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							dmginfo:ScaleDamage(0) -- deals 0 damage
+							ent:Kill() -- kill jester without them winning
+							if SERVER then
+								owner:Kill()
+							end
+						end
+					else
+						if InnocentTeams[ent:GetRole()] then
+							local newdmg = DamageInfo()
+							newdmg:SetDamage(9990)
+							newdmg:SetAttacker(owner)
+							newdmg:SetInflictor(self.Weapon)
+							newdmg:SetDamageType(DMG_BULLET)
+							newdmg:SetDamagePosition(owner:GetPos())
+
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							owner:TakeDamageInfo(newdmg)
+							return true -- block all damage on the target
+						elseif TraitorTeams[ent:GetRole()] then
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							dmginfo:ScaleDamage(270) -- deals 9990 damage
+						elseif PurpleTeams[ent:GetRole()] then
+							hook.Remove("EntityTakeDamage", title) -- remove hook before applying new damage
+							dmginfo:ScaleDamage(0) -- deals 0 damage
+							ent:Kill() -- kill jester without them winning
+							if SERVER then
+								owner:Kill()
+							end
 						end
 					end
 				end
@@ -171,7 +196,7 @@ function SWEP:PrimaryAttack()
 		self:ShootBullet(self.Primary.Damage, self.Primary.Recoil, self.Primary.NumShots, self:GetPrimaryCone())
 		self:TakePrimaryAmmo(1)
 
-		if (IsValid(owner) and !owner:IsNPC() and owner.ViewPunch) then
+		if (IsValid(owner) and (not owner:IsNPC()) and owner.ViewPunch) then
 			owner:ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) * self.Primary.Recoil, 0))
 		end
 
