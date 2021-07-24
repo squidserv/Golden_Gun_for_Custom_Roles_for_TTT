@@ -4,5 +4,16 @@
 	"tags": [
 		"roleplay",
 		"fun"
+	],
+	"ignore": [
+		".git*",
+		".vscode*",
+		"*.md",
+		"*.iml",
+		".idea*",
+		"*.psd",
+		"*.vcproj",
+		"*.svn*",
+		"LICENSE"
 	]
 }
