@@ -62,7 +62,7 @@ function SWEP:PrimaryAttack(worldsnd)
 		local owner = self.Owner
 		owner:GetViewModel():StopParticles()
 
-		if (!worldsnd) then
+		if (not worldsnd) then
 			self.Weapon:EmitSound(self.Primary.Sound)
 		elseif SERVER then
 			sound.Play(self.Primary.Sound, self:GetPos())
@@ -71,7 +71,7 @@ function SWEP:PrimaryAttack(worldsnd)
 		self:ShootBullet(self.Primary.Damage, self.Primary.NumShots, self.Primary.Cone)
 		self:TakePrimaryAmmo(1)
 
-		if (IsValid(owner) and !owner:IsNPC() and owner.ViewPunch) then
+		if (IsValid(owner) and (not owner:IsNPC()) and owner.ViewPunch) then
 			owner:ViewPunch(Angle(math.Rand(-0.2,-0.1) * self.Primary.Recoil, math.Rand(-0.1,0.1) * self.Primary.Recoil, 0))
 		end
 
